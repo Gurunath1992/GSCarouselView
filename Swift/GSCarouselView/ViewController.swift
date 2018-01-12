@@ -12,6 +12,9 @@ class ViewController: UIViewController {
     
     var pageViewController:UIPageViewController?
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var pageViewContainer: UIView!
+    var numberOfPages: Int?
+    var currentPage:Int?
     var viewControllers:Array<UIViewController>?
     
     override func viewDidLoad() {
@@ -25,6 +28,8 @@ class ViewController: UIViewController {
     }
     
     func configurePageViewController() {
+        numberOfPages = 2
+        currentPage = 0
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         pageViewController = storyboard.instantiateViewController(withIdentifier: "PageViewController") as? UIPageViewController
         pageViewController!.dataSource = self
@@ -32,15 +37,17 @@ class ViewController: UIViewController {
     
         let firstWalkthroughViewController = storyboard.instantiateViewController(withIdentifier: "FirstCarousalViewController")
         let secondWalkthroughViewController = storyboard.instantiateViewController(withIdentifier: "SecondCarousalViewController")
+        
+        
         viewControllers = [firstWalkthroughViewController,secondWalkthroughViewController]
         pageViewController!.setViewControllers([firstWalkthroughViewController],direction:.forward,animated:true, completion: nil)
         
         self.addChildViewController(pageViewController!)
         
         pageViewController?.didMove(toParentViewController: self)
-        pageViewController?.view.frame = view.frame
-        view.addSubview(pageViewController!.view)
-        view.bringSubview(toFront: pageControl)
+        pageViewController?.view.frame = pageViewContainer.frame
+        pageViewContainer.addSubview(pageViewController!.view)
+        pageViewContainer.bringSubview(toFront: pageControl)
         for subView in pageViewController!.view.subviews {
             if let scrollView = subView as? UIScrollView {
                 scrollView.delegate = self

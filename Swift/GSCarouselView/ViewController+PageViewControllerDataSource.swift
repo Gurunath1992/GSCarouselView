@@ -12,13 +12,17 @@ import UIKit
 extension ViewController:UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController:UIPageViewController, viewControllerBefore viewController:UIViewController)  -> UIViewController? {
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        let firstWalkthroughViewController = storyboard.instantiateViewController(withIdentifier: "FirstCarousalViewController")
-        return firstWalkthroughViewController
+        if let index = viewControllers!.index(of: viewController), index != 0{
+            return viewControllers![index - 1]
+        }
+        return nil
+        
     }
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-         let secondWalkthroughViewController = storyboard.instantiateViewController(withIdentifier: "SecondCarousalViewController")
-        return secondWalkthroughViewController
+        if let index = viewControllers!.index(of: viewController), index != numberOfPages! - 1{
+            return viewControllers![index + 1]
+        }
+        return nil
     }
 }
