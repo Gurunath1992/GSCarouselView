@@ -48,6 +48,7 @@ class ViewController: UIViewController {
         pageViewController?.view.frame = pageViewContainer.frame
         pageViewContainer.addSubview(pageViewController!.view)
         pageViewContainer.bringSubview(toFront: pageControl)
+        
         for subView in pageViewController!.view.subviews {
             if let scrollView = subView as? UIScrollView {
                 scrollView.delegate = self
