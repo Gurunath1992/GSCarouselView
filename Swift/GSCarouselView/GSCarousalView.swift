@@ -21,8 +21,9 @@ class GSCarousalView: UIView {
     var numberOfPages:Int?
     var images:[UIImage]?
     var titles:[String]?
-    var viewControllers:[UIViewController]?
-    var pageViewController:UIPageViewController?
+    private var viewControllers:[UIViewController]?
+    private var pageViewController: UIPageViewController?
+    private var pageControl = UIPageControl()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,24 +37,54 @@ class GSCarousalView: UIView {
     
     private func configureCarousalView() -> Void{
         numberOfPages = 2
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        pageViewController = storyboard.instantiateViewController(withIdentifier: "PageViewController") as? UIPageViewController
+        pageViewController = UIPageViewController.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageViewController!.dataSource = self
         pageViewController!.delegate = self
         
-        let firstWalkthroughViewController = storyboard.instantiateViewController(withIdentifier: "FirstCarousalViewController")
-        let secondWalkthroughViewController = storyboard.instantiateViewController(withIdentifier: "SecondCarousalViewController")
+        let firstWalkthroughViewController = getViewController(#imageLiteral(resourceName: "background-image"))
+        let secondWalkthroughViewController =  getViewController(#imageLiteral(resourceName: "background-image"))
         
         viewControllers = [firstWalkthroughViewController, secondWalkthroughViewController]
         pageViewController!.setViewControllers([firstWalkthroughViewController], direction:.forward,animated:true, completion: nil)
         
-        pageViewController?.view.frame = CGRect.init(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        pageViewController!.view.frame = CGRect.init(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         self.addSubview(pageViewController!.view)
+        
+        pageControl = UIPageControl.init(frame: CGRect.init(x: 0, y: self.frame.height - 30, width: self.frame.width, height: 30))
+        pageControl.numberOfPages = numberOfPages!
+        pageControl.currentPage = 0
+        self.addSubview(pageControl)
+//        viewController.view.bringSubview(toFront: pageControl)
+    }
+    
+    func getViewController(_ image:UIImage) -> UIViewController{
+        let viewController = UIViewController()
+        viewController.view.frame = CGRect.init(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        
+        let imageView = UIImageView.init(frame: viewController.view.frame)
+        imageView.image = image
+        imageView.contentMode  = .scaleAspectFit
+        viewController.view.addSubview(imageView)
+        
+        let title = UILabel.init(frame: CGRect.init(x: 10, y: self.frame.height - 72, width: self.frame.width-20, height: 42))
+        title.numberOfLines = 2
+        title.text = "Title"
+        title.textColor = .white
+        viewController.view.addSubview(title)
+        
+        
+        
+        return viewController
     }
 }
 
+
 extension GSCarousalView: UIPageViewControllerDelegate {
-    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        if let viewController = pendingViewControllers.first {
+            self.pageControl.currentPage = (viewControllers?.index(of: viewController))!
+        }
+    }
 }
 
 extension GSCarousalView: UIPageViewControllerDataSource {
