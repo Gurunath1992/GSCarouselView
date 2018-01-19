@@ -41,8 +41,8 @@ class GSCarousalView: UIView {
         pageViewController!.dataSource = self
         pageViewController!.delegate = self
         
-        let firstWalkthroughViewController = getViewController(#imageLiteral(resourceName: "background-image"))
-        let secondWalkthroughViewController =  getViewController(#imageLiteral(resourceName: "background-image"))
+        let firstWalkthroughViewController = getViewController("FirstCarousalViewController")
+        let secondWalkthroughViewController =  getViewController("SecondCarousalViewController")
         
         viewControllers = [firstWalkthroughViewController, secondWalkthroughViewController]
         pageViewController!.setViewControllers([firstWalkthroughViewController], direction:.forward,animated:true, completion: nil)
@@ -57,23 +57,8 @@ class GSCarousalView: UIView {
 //        viewController.view.bringSubview(toFront: pageControl)
     }
     
-    func getViewController(_ image:UIImage) -> UIViewController{
-        let viewController = UIViewController()
-        viewController.view.frame = CGRect.init(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-        
-        let imageView = UIImageView.init(frame: viewController.view.frame)
-        imageView.image = image
-        imageView.contentMode  = .scaleAspectFit
-        viewController.view.addSubview(imageView)
-        
-        let title = UILabel.init(frame: CGRect.init(x: 10, y: self.frame.height - 72, width: self.frame.width-20, height: 42))
-        title.numberOfLines = 2
-        title.text = "Title"
-        title.textColor = .white
-        viewController.view.addSubview(title)
-        
-        
-        
+    func getViewController(_ identifier:String) -> UIViewController{
+      let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: identifier)
         return viewController
     }
 }
