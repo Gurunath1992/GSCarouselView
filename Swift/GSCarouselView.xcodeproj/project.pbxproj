@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9B54A36D200A6ED400B70DE3 /* GSCarousalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B54A36C200A6ED400B70DE3 /* GSCarousalView.swift */; };
+		9BC03CC72014B2C600EDDD65 /* GSCarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC03CC62014B2C600EDDD65 /* GSCarouselViewController.swift */; };
 		9BF104721FDF81C1000D313B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF104711FDF81C1000D313B /* AppDelegate.swift */; };
 		9BF104741FDF81C1000D313B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF104731FDF81C1000D313B /* ViewController.swift */; };
 		9BF104771FDF81C1000D313B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BF104751FDF81C1000D313B /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		9B54A36C200A6ED400B70DE3 /* GSCarousalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GSCarousalView.swift; sourceTree = "<group>"; };
+		9BC03CC62014B2C600EDDD65 /* GSCarouselViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GSCarouselViewController.swift; sourceTree = "<group>"; };
 		9BF1046E1FDF81C1000D313B /* GSCarouselView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GSCarouselView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BF104711FDF81C1000D313B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BF104731FDF81C1000D313B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				9BF1047A1FDF81C1000D313B /* LaunchScreen.storyboard */,
 				9BF1047D1FDF81C1000D313B /* Info.plist */,
 				9B54A36C200A6ED400B70DE3 /* GSCarousalView.swift */,
+				9BC03CC62014B2C600EDDD65 /* GSCarouselViewController.swift */,
 			);
 			path = GSCarouselView;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BC03CC72014B2C600EDDD65 /* GSCarouselViewController.swift in Sources */,
 				9BF104741FDF81C1000D313B /* ViewController.swift in Sources */,
 				9B54A36D200A6ED400B70DE3 /* GSCarousalView.swift in Sources */,
 				9BF104721FDF81C1000D313B /* AppDelegate.swift in Sources */,
