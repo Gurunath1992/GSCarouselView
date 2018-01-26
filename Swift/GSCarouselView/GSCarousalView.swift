@@ -9,16 +9,6 @@
 import UIKit
 
 class GSCarousalView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-    
-    
     @IBInspectable
     var numberOfSlides:Int{
         get {
@@ -31,26 +21,31 @@ class GSCarousalView: UIView {
     
     var images:[UIImage]?
     var titles:[String]?
+    var delegate:GSCarouselViewDelegate?
     private var numberOfPages:Int?
     private var viewControllers:[UIViewController]?
     private var pageViewController: UIPageViewController?
     private var pageControl = UIPageControl()
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        configureCarousalView()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureCarousalView()
+        numberOfPages = numberOfSlides
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        configureCarousalView()
+        numberOfPages = numberOfSlides
     }
 }
 
 extension GSCarousalView {
     
     public func configureCarousalView() -> Void{
-        numberOfPages = numberOfSlides
         configureViewControllers()
         configurePageViewController()
         configurePageControl()
@@ -60,9 +55,7 @@ extension GSCarousalView {
         viewControllers = []
         var i:Int = 0
         while i < numberOfPages! {
-            if let viewController = getViewController("GSCarouselViewController") {
-                viewController.carouselImage = #imageLiteral(resourceName: "background-image")
-                viewController.carouselTitle = "Carousel Title"
+            if let viewController = getViewController(i) {
                 viewControllers?.append(viewController)
             }
             else {
@@ -90,8 +83,15 @@ extension GSCarousalView {
         self.addSubview(pageControl)
     }
     
-    private func getViewController(_ identifier:String) -> GSCarouselViewController?{
-        return UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: identifier) as? GSCarouselViewController
+    private func getViewController(_ index:Int) -> GSCarouselViewController?{
+       let viewController =  UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "GSCarouselViewController") as? GSCarouselViewController
+        if let controllerImages = images {
+            viewController?.carouselImage = controllerImages[index]
+        }
+        if let controllerTitles = titles {
+            viewController?.carouselTitle = controllerTitles[index]
+        }
+        return viewController
     }
 }
 
@@ -106,15 +106,29 @@ extension GSCarousalView: UIPageViewControllerDelegate {
 extension GSCarousalView: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController:UIPageViewController, viewControllerBefore viewController:UIViewController)  -> UIViewController? {
         if let index = viewControllers!.index(of: viewController), index != 0{
+            if let completedSwipe = self.delegate?.swipedViewControllerAtIndex! {
+                completedSwipe(index)
+            }
             return viewControllers![index - 1]
         }
+        reachedTerminalSlide()
         return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if let index = viewControllers!.index(of: viewController), index != numberOfPages! - 1{
+            if let completedSwipe = self.delegate?.swipedViewControllerAtIndex! {
+                completedSwipe(index)
+            }
             return viewControllers![index + 1]
         }
+        reachedTerminalSlide()
         return nil
+    }
+    
+    func reachedTerminalSlide() -> Void {
+        if let completedSwipe = self.delegate?.swipedAllViewControllers! {
+            completedSwipe()
+        }
     }
 }
